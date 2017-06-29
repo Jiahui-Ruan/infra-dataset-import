@@ -9,14 +9,19 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
       var socket = io.connect('http://' + document.domain + ':' + location.port);
-      socket.on('connect', function() {
-          socket.emit('my event', {data: 'I\'m connected!'});
+      // init all cmd
+      socket.on('cfg finsih', function(cmd_list) {
+        for (let cmd of cmd_list) {
+          $('#cmd_list').append(`<li class="list-group-item">${cmd}</li>`)
+        }
       });
     </script>
   </head>
   <body>
-    <p>
+    <h2>
       import rosbag on web!
-    </p>
+    </h2>
+    <ul class="list-group" id="cmd_list">
+    </ul>
   </body>
 </html>
