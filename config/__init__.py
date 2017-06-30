@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from file_reader import FileReader
 
-async_mode = 'gevent'
+async_mode = 'eventlet'
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
@@ -16,4 +16,4 @@ def index():
 @socketio.on('connect')
 def send_cfg():
     fr = FileReader()
-    emit('cfg finsih', fr.get_all_cmd('config/steps.yaml'))
+    emit('cfg_finsih', fr.get_all_cmd('config/steps.yaml'))
