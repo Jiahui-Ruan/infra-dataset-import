@@ -36,24 +36,11 @@
             })
           }
         })
-        // detect ssd insert
-        socket.on('all_bag_found', function(bag_list) {
-          for (let bag of bag_list) {
-            $('#bag_list').append(function() {
-              return $(`<li class='list-group-item'>${bag}</li>`).click(
-                {param: bag}, toggleItem)
-            })
-          }
-        })
         // receive msg or rst from terminal
         socket.on('terminal_rst', function(rst_json) {
           var textedJSON = JSON.stringify(rst_json, undefined, 4)
           console.log(textedJSON)
           $('#rst_textarea').val(textedJSON)
-        })
-        // bind detect btn
-        $('#detect_btn').click(function () {
-          socket.emit('find_bags')
         })
         // bind umount btn
         $('#umount_btn').click(function () {

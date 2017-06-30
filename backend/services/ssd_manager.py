@@ -12,7 +12,7 @@ def find_bags():
             matches.append(os.path.join(root))
             # after found one .bag jump to next loop
             break
-    socketio.emit('all_bag_found', matches)
+    socketio.emit('allBagFound', matches)
 
 @socketio.on('umount_ssd')
 def umount_ssd():

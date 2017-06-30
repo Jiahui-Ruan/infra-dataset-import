@@ -1,28 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <div class="ui equal width grid container">
+      <stat-header></stat-header>
+      <bag-list></bag-list>
+      <ctrl-bar></ctrl-bar>
+    </div>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
-
 export default {
-  name: 'app',
-  components: {
-    Hello
+  sockets: {
+    connect: function () {
+      console.log('socket connected')
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100%
 }
 </style>
