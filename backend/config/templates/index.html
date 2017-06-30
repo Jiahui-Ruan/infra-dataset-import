@@ -45,6 +45,12 @@
             })
           }
         })
+        // receive msg or rst from terminal
+        socket.on('terminal_rst', function(rst_json) {
+          var textedJSON = JSON.stringify(rst_json, undefined, 4)
+          console.log(textedJSON)
+          $('#rst_textarea').val(textedJSON)
+        })
         // bind detect btn
         $('#detect_btn').click(function () {
           socket.emit('find_bags')
@@ -65,18 +71,19 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <h2>
-          import rosbag on web!
-        </h2>
+        <div class="col-6">
+          <h2>import rosbag via web</h2>
+        </div>
+        <div class="col-6">
+          <h2>Terminal Result</h2>
+        </div>
       </div>
       <div class="row">
         <div class="col-6">
           <ul class="list-group" id="cmd_list"></ul>
         </div>
         <div class="col-6">
-          <p>
-            terminal
-          </p>
+          <textarea id="rst_textarea" rows="30" cols="60"></textarea>
         </div>
       </div>
       <div class="row">

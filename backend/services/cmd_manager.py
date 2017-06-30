@@ -10,8 +10,13 @@ def handleCmd(cmdObj):
     cmd = cmdObj['cmd'] + cmdObj.get('param', '')
     # check first if a cmd is cd
     if cmd[:2] == 'cd':
-        os.chdir(cmd[3:])
-        print cmd[3:]
+        try:
+            os.chdir(cmd[3:])
+            socketio.emit('terminal_rst', {'msg':
+                                        'has cd into {}'.format(cmd[3:])})
+        except:
+            socketio.emit('terminal_rst', {'msg':
+                                        'can not cd into {}'.format(cmd[3:])})
         return
 
     if not pList:

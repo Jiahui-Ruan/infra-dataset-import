@@ -1,0 +1,4 @@
+1. gen import list
+2. configure import parameters
+3. do import
+4. check output
