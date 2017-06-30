@@ -2,9 +2,7 @@
   on_fail: retry
 - cmd: ds-rosbag-scan ./out
   on_fail: retry
-- cmd: tmux
-  on_fail: retry
-- cmd: ds-rosbag-scan ./out | xargs -L1 -P4 ds-import | tee import-log.log
+- cmd: ds-rosbag-import | tee import-log.log
   on_fail: retry
 - cmd: cd out
   on_fail: retry
