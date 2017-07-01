@@ -12,16 +12,6 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port)
         // init cmd obj
         var cmdObj = {}
-        // activate function
-        function toggleItem(event) {
-          if ($(this).hasClass('active')) {
-            $(this).removeClass('active')
-            // TODO: remember to delete the bag
-          } else {
-            $(this).addClass('active')
-            cmdObj['param'] = event.data.param
-          }
-        }
         // chosen cmd
         function chooseCmd(event) {
           $(this).addClass('active')
