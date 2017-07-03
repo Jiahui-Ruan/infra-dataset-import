@@ -7,4 +7,4 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
 socketio = SocketIO(app, async_mode=async_mode)
-state_dict = {}
+state_dict = {'step': 1}

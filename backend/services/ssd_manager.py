@@ -9,8 +9,9 @@ def find_bags():
     matches = []
     for root, dirnames, filenames in os.walk('/media/{}'.format(getpass.getuser())):
         for filename in fnmatch.filter(filenames, '*.bag'):
-            matches.append(os.path.join(root))
-            # after found one .bag jump to next loop
+            path = os.path.join(root.rsplit('/',1)[0])
+            if path not in matches:
+                matches.append(path)
             break
     state_dict['allBag'] = matches
     socketio.emit('all_bag_found', matches)
