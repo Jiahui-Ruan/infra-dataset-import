@@ -39,14 +39,6 @@
 <script>
 const $ = window.$
 
-function replacer (key, value) {
-  // Filtering out properties
-  if (typeof value === 'string') {
-    return value.trim()
-  }
-  return value
-}
-
 export default {
   data () {
     return {
@@ -57,12 +49,22 @@ export default {
       }
     }
   },
+  sockets: {
+    'init_state': function (stateDict) {
+      this.bagList = stateDict['allBag'] || []
+      this.selectBagObj['selectBag'] = stateDict['selectBag'] || []
+    },
+    'all_bag_found': function (list) {
+      this.bagList = list
+    }
+  },
   watch: {
     'selectBagObj': {
       handler: function (obj) {
-        var textedJSON = JSON.stringify(obj, replacer, 4)
+        var textedJSON = JSON.stringify(obj, null, 4)
         console.log(textedJSON)
         $('#showBagArea').val(textedJSON)
+        this.$socket.emit('select_bag_change', this.selectBagObj['selectBag'])
       },
       deep: true
     }
@@ -70,7 +72,7 @@ export default {
   methods: {
     addBag (event) {
       let target = event.target
-      let bag = $(target).text()
+      let bag = $(target).text().trim()
       let array = this.selectBagObj['selectBag']
       let idx = array.indexOf(bag)
       if (idx > -1) {
@@ -84,11 +86,6 @@ export default {
       if (idx > -1) {
         array.splice(idx, 1)
       }
-    }
-  },
-  sockets: {
-    allBagFound: function (list) {
-      this.bagList = list
     }
   }
 }

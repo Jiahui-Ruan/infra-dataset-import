@@ -2,7 +2,7 @@ import os
 import getpass
 import fnmatch
 
-from config import socketio
+from config import socketio, state_dict
 
 @socketio.on('find_bags')
 def find_bags():
@@ -12,7 +12,8 @@ def find_bags():
             matches.append(os.path.join(root))
             # after found one .bag jump to next loop
             break
-    socketio.emit('allBagFound', matches)
+    state_dict['allBag'] = matches
+    socketio.emit('all_bag_found', matches)
 
 @socketio.on('umount_ssd')
 def umount_ssd():

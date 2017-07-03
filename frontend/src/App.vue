@@ -13,6 +13,7 @@ export default {
   sockets: {
     connect: function () {
       console.log('socket connected')
+      this.$socket.emit('call_init')
     }
   }
 }
