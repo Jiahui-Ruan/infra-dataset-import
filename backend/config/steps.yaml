@@ -1,6 +1,6 @@
 - cmd: cd $WHERE_THE_BAG_STORE
   on_fail: retry
-- cmd: ds-rosbag-scan ./out
+- cmd: ds-rosbag-scan-multi ./out
   on_fail: retry
 - cmd: ds-rosbag-import | tee import-log.log
   on_fail: retry
