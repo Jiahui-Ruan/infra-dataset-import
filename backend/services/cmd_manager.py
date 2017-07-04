@@ -1,31 +1,24 @@
 import os
 from subprocess import Popen, PIPE
-from multiprocessing import Process
+import time
+from config import socketio, cmd_list, pipe_list, state_dict
 
-from config import socketio, cmd_list, state_dict
+cwd_list = []
+bag_param_dict = {}
 
-process_dict = {}
-pList = []
-
-def handleCmd(cmd_step):
+def handle_cmd(cmd_step):
     for step in cmd_step:
         cmd =  cmd_list[step]
         # check first if a cmd is cd
         if cmd[:2] == 'cd':
             for bag in state_dict['selectBag']:
-                process_dict[bag] = Process(target=os.chdir,
-                                                args=(bag,))
-                process_dict[bag].start()
-                process_dict[bag].join()
-            # except:
-                # socketio.emit('terminal_rst', {'msg':
-                #                             'can not cd into {}'.format(cmd[3:])})
-            # return
-        # if not pList:
-        #     p = Popen(cmd, shell=True, stdout=PIPE)
-        # else:
-        #     p = Popen(cmd, shell=True, stdout=PIPE, stdin=pList[-1].stdout)
-        #
-        # pList.append(p)
-        # stdout, err = p.communicate()
-        # print stdout
+                cwd_list.append(bag)
+        else:
+            for idx, cwd in enumerate(cwd_list):
+                p = Popen(cmd, shell=True, stdout=PIPE, cwd=cwd,
+                    stdin=pipe_list[idx].stdout if idx < len(pipe_list) else None)
+                pipe_list.append(p)
+                stdout, err = p.communicate()
+                bag_param_dict[cwd.rsplit('/', 1)[1]] = stdout
+            print bag_param_dict
+            socketio.emit('bag_param_change', bag_param_dict)

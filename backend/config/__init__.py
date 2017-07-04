@@ -12,3 +12,4 @@ socketio = SocketIO(app, async_mode=async_mode)
 
 state_dict = {'step': 1}
 cmd_list = FileReader().get_all_cmd('config/steps.yaml')
+pipe_list = []

@@ -1,5 +1,5 @@
 from config import socketio, state_dict
-from cmd_manager import handleCmd
+from cmd_manager import handle_cmd
 
 @socketio.on('call_init')
 def init_state():
@@ -12,7 +12,7 @@ def select_bag_change(select_bag_list):
 
 @socketio.on('submit_bag')
 def submit_bag():
-    handleCmd((0, 1))
+    handle_cmd((0, 1))
 
 @socketio.on('prev_page')
 def submit_bag():

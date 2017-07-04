@@ -9,7 +9,7 @@ def find_bags():
     matches = []
     for root, dirnames, filenames in os.walk('/media/{}'.format(getpass.getuser())):
         for filename in fnmatch.filter(filenames, '*.bag'):
-            path = os.path.join(root.rsplit('/',1)[0])
+            path = os.path.join(root.rsplit('/', 1)[0])
             if path not in matches:
                 matches.append(path)
             break

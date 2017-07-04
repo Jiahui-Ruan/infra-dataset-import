@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="row">
-    <div class="twelve wide column baglist">
+    <div class="twelve wide column">
       <div class="ui segment">
         <div class="ui vertical segment">
           <paginate
@@ -23,7 +23,7 @@
     <!-- <div class="four wide column">
       <textarea rows="48" cols="80" id="showBagArea"></textarea>
     </div> -->
-    <div class="four wide column selectbag">
+    <div class="four wide column">
       <div class="ui segment">
         <div class="ui middle aligned divided list">
           <div class="item" v-for="bag in selectBagObj['selectBag']">
@@ -92,10 +92,10 @@ export default {
 </script>
 
 <style lang="css">
-  .twelve.wide.column.baglist {
+  .twelve.wide.column {
     left: -20%;
   }
-  .four.wide.column.selectbag {
+  .four.wide.column {
     left: -20%;
   }
   div.ui.segment {
