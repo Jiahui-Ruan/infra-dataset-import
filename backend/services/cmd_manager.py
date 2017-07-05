@@ -8,6 +8,11 @@ bag_param_dict = {}
 
 def handle_cmd(cmd_step):
     for step in cmd_step:
+        #init list and dict
+        if step == 0:
+            cwd_list = []
+            bag_param_dict = {}
+            pipe_list = []
         cmd =  cmd_list[step]
         # check first if a cmd is cd
         if cmd[:2] == 'cd':
@@ -20,5 +25,5 @@ def handle_cmd(cmd_step):
                 pipe_list.append(p)
                 stdout, err = p.communicate()
                 bag_param_dict[cwd.rsplit('/', 1)[1]] = stdout
-            print bag_param_dict
-            socketio.emit('bag_param_change', bag_param_dict)
+            socketio.emit('bag_param_change', bag_param_dict, broadcast=True)
+            state_dict['bagParamDict'] = bag_param_dict

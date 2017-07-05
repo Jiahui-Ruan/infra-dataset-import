@@ -62,7 +62,6 @@ export default {
     'selectBagObj': {
       handler: function (obj) {
         var textedJSON = JSON.stringify(obj, null, 4)
-        console.log(textedJSON)
         $('#showBagArea').val(textedJSON)
         this.$socket.emit('select_bag_change', this.selectBagObj['selectBag'])
       },

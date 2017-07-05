@@ -10,8 +10,11 @@
         </thead>
         <tbody>
           <tr v-for="(v, k) in paramDict">
-            <td> {{ v }}</td>
-            <td> {{ k }}</td>
+            <td><div style="width: 80px;">{{ k }}</div></td>
+            <td>
+              <textarea rows="10" cols="120"
+              @input="changeParam(k, $event)">{{ v }}</textarea>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -20,10 +23,22 @@
 </template>
 
 <script>
+const $ = window.$
+
 export default {
-  props: ['paramDict']
+  props: ['paramDict'],
+  methods: {
+    changeParam (k, event) {
+      this.paramDict[k] = $(event.target).val().trim()
+      this.$socket.emit('bag_param_change', this.paramDict)
+    }
+  }
 }
 </script>
 
 <style lang="css" scoped>
+  textarea {
+    width: 1200px;
+    height: 200px;
+  }
 </style>

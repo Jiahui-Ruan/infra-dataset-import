@@ -14,13 +14,16 @@ export default {
   data () {
     return {
       step: 1,
-      paramDict: {}
+      paramDict: []
     }
   },
   sockets: {
     connect: function () {
       console.log('socket connected')
       this.$socket.emit('call_init')
+    },
+    'init_state': function (stateDict) {
+      this.paramDict = stateDict['bagParamDict']
     },
     'change_step': function (step) {
       this.step = step

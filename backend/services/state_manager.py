@@ -10,18 +10,22 @@ def init_state():
 def select_bag_change(select_bag_list):
     state_dict['selectBag'] = select_bag_list
 
+@socketio.on('bag_param_change')
+def bag_param_change(bag_param_dict):
+    state_dict['bagParamDict'] = bag_param_dict
+
 @socketio.on('submit_bag')
 def submit_bag():
     handle_cmd((0, 1))
 
 @socketio.on('prev_page')
-def submit_bag():
+def prev_page():
     state_dict['step'] -= 1
     socketio.emit('change_step', state_dict['step'])
     socketio.emit('init_state', state_dict)
 
 @socketio.on('next_page')
-def submit_bag():
+def next_page():
     state_dict['step'] += 1
     socketio.emit('change_step', state_dict['step'])
     socketio.emit('init_state', state_dict)
