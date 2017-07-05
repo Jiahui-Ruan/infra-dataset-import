@@ -14,6 +14,7 @@ Vue.component('StatHeader', require('@/components/stat-header'))
 Vue.component('BagList', require('@/components/bag-list'))
 Vue.component('BagParamList', require('@/components/bag-param-list'))
 Vue.component('CtrlBar', require('@/components/ctrl-bar'))
+Vue.filter('dir2name', dir => dir.substring(dir.lastIndexOf('/') + 1, dir.length))
 Vue.use(VueSocketio, SOCKET_URL)
 Vue.use(VuePaginate)
 

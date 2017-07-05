@@ -17,4 +17,3 @@ state_dict = {
             'selectBag': []
 }
 cmd_list = FileReader().get_all_cmd('config/steps.yaml')
-pipe_list = []

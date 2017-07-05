@@ -10,7 +10,7 @@
         </thead>
         <tbody>
           <tr v-for="(v, k) in paramDict">
-            <td><div style="width: 80px;">{{ k }}</div></td>
+            <td><div style="width: 80px;">{{ k | dir2name }}</div></td>
             <td>
               <textarea rows="10" cols="120"
               @input="changeParam(k, $event)">{{ v }}</textarea>

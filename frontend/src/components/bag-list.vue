@@ -27,7 +27,7 @@
       <div class="ui segment">
         <div class="ui middle aligned divided list">
           <div class="item" v-for="bag in selectBagObj['selectBag']">
-            {{ bag }}
+            {{ bag | dir2name }}
             <i class="remove icon" @click="removeBag(bag)"></i>
           </div>
         </div>

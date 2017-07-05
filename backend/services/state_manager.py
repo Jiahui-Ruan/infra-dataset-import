@@ -9,6 +9,10 @@ def init_state():
 @socketio.on('select_bag_change')
 def select_bag_change(select_bag_list):
     state_dict['selectBag'] = select_bag_list
+    # remove the un-selected bag
+    for bag in state_dict['bagParamDict'].keys():
+        if bag not in select_bag_list:
+            state_dict['bagParamDict'].pop(bag)
 
 @socketio.on('bag_param_change')
 def bag_param_change(bag_param_dict):
@@ -17,6 +21,10 @@ def bag_param_change(bag_param_dict):
 @socketio.on('submit_bag')
 def submit_bag():
     handle_cmd((0, 1))
+
+@socketio.on('start_import')
+def start_import():
+    handle_cmd((2))
 
 @socketio.on('prev_page')
 def prev_page():
