@@ -10,6 +10,11 @@ app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
 socketio = SocketIO(app, async_mode=async_mode)
 
-state_dict = {'step': 1}
+state_dict = {
+            'step': 1,
+            'bagParamDict': {},
+            'allBag': [],
+            'selectBag': []
+}
 cmd_list = FileReader().get_all_cmd('config/steps.yaml')
 pipe_list = []

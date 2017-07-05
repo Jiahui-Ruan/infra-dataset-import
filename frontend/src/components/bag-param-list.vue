@@ -29,7 +29,7 @@ export default {
   props: ['paramDict'],
   methods: {
     changeParam (k, event) {
-      this.paramDict[k] = $(event.target).val().trim()
+      this.paramDict[k] = $(event.target).val()
       this.$socket.emit('bag_param_change', this.paramDict)
     }
   }

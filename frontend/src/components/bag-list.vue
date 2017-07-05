@@ -51,8 +51,8 @@ export default {
   },
   sockets: {
     'init_state': function (stateDict) {
-      this.bagList = stateDict['allBag'] || []
-      this.selectBagObj['selectBag'] = stateDict['selectBag'] || []
+      this.bagList = stateDict['allBag']
+      this.selectBagObj['selectBag'] = stateDict['selectBag']
     },
     'all_bag_found': function (list) {
       this.bagList = list
