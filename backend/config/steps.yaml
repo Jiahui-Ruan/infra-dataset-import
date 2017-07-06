@@ -2,7 +2,7 @@
   on_fail: retry
 - cmd: ds-rosbag-scan-multi ~/out
   on_fail: retry
-- cmd: ds-rosbag-import | tee import-log.log
+- cmd: ds-rosbag-import
   on_fail: retry
 - cmd: cd ~/out
   on_fail: retry

@@ -4,6 +4,7 @@
       <stat-header :step="step"></stat-header>
       <bag-list v-if="step === 1"></bag-list>
       <bag-param-list v-if="step === 2" :paramDict="paramDict"></bag-param-list>
+      <bag-stat-list v-if="step === 3"></bag-stat-list>
       <ctrl-bar :step="step"></ctrl-bar>
     </div>
   </div>
