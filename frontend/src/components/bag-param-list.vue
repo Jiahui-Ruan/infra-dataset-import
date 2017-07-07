@@ -4,8 +4,8 @@
       <table class="ui celled table">
         <thead>
           <tr>
-            <th>Bag Name</th>
-            <th>Parameter</th>
+            <th>Date</th>
+            <th>Parameter (each line start with --meta-file is a job)</th>
           </tr>
         </thead>
         <tbody>
