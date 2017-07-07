@@ -6,11 +6,11 @@
   on_fail: retry
 - cmd: cd ~/out
   on_fail: retry
-- cmd: ls | xargs -L1 ds-compress-video
+- cmd: ds-compress-video
   on_fail: retry
-- cmd: ls | xargs -L1 ds-check
+- cmd: ds-check
   on_fail: retry
 - cmd: cp -r * ~/datasets_writable
   on_fail: retry
-- cmd: ls | xargs -L1 ds-submit
+- cmd: ds-submit
   on_fail: retry
