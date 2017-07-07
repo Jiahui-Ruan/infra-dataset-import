@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 
 from subprocess import Popen, PIPE
@@ -11,30 +12,42 @@ from ThreadPool import ThreadPool
 cwd_list = []
 task_deque = deque()
 
-def enqueue_output(out, queue):
-    for line in iter(out.readline, b''):
-        queue.put(line)
-    out.close()
+def extract_bag_name(cmd):
+    for param in cmd.split():
+        match = re.search(r'\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}', param)
+        if match:
+            return match.group(0)
 
 def worker(s, pool, cmd, cwd):
     logging.debug('Waiting to join the pool')
+    cmd = 'PYTHONUNBUFFERED=1 ' + cmd
     with s:
         name = currentThread().getName()
         pool.makeActive(name)
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE, bufsize=1, shell=True, cwd=cwd)
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=cwd)
+        bag_name = extract_bag_name(cmd)
+        out_str = ""
         while p.poll() is None:
-            pass
-        print('Not sleeping any longer.  Exited with returncode %d' % p.returncode)
+            c = p.stdout.read(1)
+            if c != '\n':
+                out_str += c
+            else:
+                print {bag_name: out_str}
+                socketio.emit('cmd_output', {bag_name: out_str})
+                out_str = ""
+        # print('Not sleeping any longer.  Exited with returncode %d' % p.returncode)
+        socketio.emit('import_result', {bag_name: p.returncode})
         pool.makeInactive(name)
 
 def execute_in_parallel(task_deque):
-    s = Semaphore(4)
+    s = Semaphore(5)
     pool = ThreadPool()
     while task_deque:
         task = task_deque.popleft()
         t = Thread(target=worker, args=[s, pool, task[0], task[1]])
         t.setDaemon(True)
         t.start()
+    s = Semaphore(5)
 
 def handle_cmd(cmd_step):
     for step in cmd_step:

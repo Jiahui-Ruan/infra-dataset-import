@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 
 from file_reader import FileReader
 
-async_mode = 'eventlet'
+async_mode = 'threading'
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)

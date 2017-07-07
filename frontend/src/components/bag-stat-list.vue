@@ -21,6 +21,11 @@
 
 <script>
 export default {
+  sockets: {
+    'cmd_output': function (obj) {
+      console.log(obj)
+    }
+  }
 }
 </script>
 
