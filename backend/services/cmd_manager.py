@@ -41,7 +41,7 @@ def worker(s, pool, cmd, cwd):
             if c != '\n':
                 out_str += c
             else:
-                state_dict['bagTermOutputDict'] = {bag_name: out_str}
+                state_dict['bagTermOutputDict'][bag_name].append(out_str)
                 state_dict['bagProgDict'][bag_name][0] = color_list[4]
                 socketio.emit('init_state', state_dict)
                 out_str = ""
