@@ -10,6 +10,13 @@ from config import socketio, cmd_list, state_dict
 from ThreadPool import ThreadPool
 
 STEP = 5
+color_list = [
+    '#e6ffe6',
+    '#21ba45',
+    '#db2828',
+    '#fbbd08',
+    '#2185d0'
+]
 
 cwd_list = []
 task_deque = deque()
@@ -34,10 +41,14 @@ def worker(s, pool, cmd, cwd):
             if c != '\n':
                 out_str += c
             else:
-                socketio.emit('cmd_output', {bag_name: out_str})
+                state_dict['bagTermOutputDict'] = {bag_name: out_str}
+                state_dict['bagProgDict'][bag_name][0] = color_list[4]
+                socketio.emit('init_state', state_dict)
                 out_str = ""
-        print p.returncode
-        state_dict['bagProgDict'][bag_name][0] = p.returncode
+        if p.returncode == 0:
+            state_dict['bagProgDict'][bag_name][0] = color_list[1]
+        else:
+            state_dict['bagProgDict'][bag_name][0] = color_list[2]
         socketio.emit('init_state', state_dict)
         pool.makeInactive(name)
 
@@ -71,7 +82,7 @@ def handle_cmd(cmd_step):
                 for param in params.splitlines():
                     bag_name = extract_bag_name(param)
                     # init two dict for recording
-                    state_dict['bagProgDict'][bag_name] = [-1] * STEP
+                    state_dict['bagProgDict'][bag_name] = [color_list[0]] * STEP
                     state_dict['bagTermOutputDict'][bag_name] = []
                     task_deque.append((cmd + ' ' + param, cwd))
             execute_in_parallel(task_deque,)

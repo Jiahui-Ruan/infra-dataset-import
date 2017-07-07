@@ -1,26 +1,35 @@
 <template lang="html">
   <div class="row">
-    <div class="sixteen wide column">
-      <table class="ui celled table">
-        <thead>
-          <tr>
-            <th>Bag Name</th>
-            <th>Import</th>
-            <th>Compress Video</th>
-            <th>Check</th>
-            <th>Copy</th>
-            <th>Submit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(v, k) in progDict">
-            <td style="width: 80px; white-space: nowrap;">{{ k }}</td>
-            <template v-for="num in v">
-              <td style="width:80px"><tag :num="num"></tag></td>
-            </template>
-          </tr>
-        </tbody>
-      </table>
+    <div class="twelve wide column">
+      <div class="ui vertical segment">
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th>Bag Name</th>
+                <th>Import</th>
+                <th>Compress Video</th>
+                <th>Check</th>
+                <th>Copy</th>
+                <th>Submit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(v, k) in progDict">
+                <td style="width: 80px; white-space: nowrap;">
+                  <a class="ui label tag">{{ k }}</a>
+                </td>
+                <template v-for="color in v">
+                  <td style="width:80px"><tag :color="color">{{ color }}</tag></td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="four wide column">
+      <div class="ui vertical segment">
+        terminal
+      </div>
     </div>
   </div>
 </template>
