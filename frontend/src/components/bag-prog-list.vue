@@ -13,6 +13,12 @@
           </tr>
         </thead>
         <tbody>
+          <tr v-for="(v, k) in progDict">
+            <td style="width: 80px; white-space: nowrap;">{{ k }}</td>
+            <template v-for="num in v">
+              <td style="width:80px"><tag :num="num"></tag></td>
+            </template>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -21,10 +27,13 @@
 
 <script>
 export default {
+  props: ['termDict', 'progDict'],
   sockets: {
     'cmd_output': function (obj) {
-      console.log(obj)
     }
+  },
+  components: {
+    tag: require('./_tag')
   }
 }
 </script>

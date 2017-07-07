@@ -9,6 +9,8 @@ from collections import deque
 from config import socketio, cmd_list, state_dict
 from ThreadPool import ThreadPool
 
+STEP = 5
+
 cwd_list = []
 task_deque = deque()
 
@@ -32,11 +34,11 @@ def worker(s, pool, cmd, cwd):
             if c != '\n':
                 out_str += c
             else:
-                print {bag_name: out_str}
                 socketio.emit('cmd_output', {bag_name: out_str})
                 out_str = ""
-        # print('Not sleeping any longer.  Exited with returncode %d' % p.returncode)
-        socketio.emit('import_result', {bag_name: p.returncode})
+        print p.returncode
+        state_dict['bagProgDict'][bag_name][0] = p.returncode
+        socketio.emit('init_state', state_dict)
         pool.makeInactive(name)
 
 def execute_in_parallel(task_deque):
@@ -47,7 +49,6 @@ def execute_in_parallel(task_deque):
         t = Thread(target=worker, args=[s, pool, task[0], task[1]])
         t.setDaemon(True)
         t.start()
-    s = Semaphore(5)
 
 def handle_cmd(cmd_step):
     for step in cmd_step:
@@ -68,5 +69,9 @@ def handle_cmd(cmd_step):
         elif 'ds-rosbag-import' in cmd:
             for cwd, params in state_dict['bagParamDict'].iteritems():
                 for param in params.splitlines():
+                    bag_name = extract_bag_name(param)
+                    # init two dict for recording
+                    state_dict['bagProgDict'][bag_name] = [-1] * STEP
+                    state_dict['bagTermOutputDict'][bag_name] = []
                     task_deque.append((cmd + ' ' + param, cwd))
             execute_in_parallel(task_deque,)

@@ -13,6 +13,8 @@ socketio = SocketIO(app, async_mode=async_mode)
 state_dict = {
             'step': 1,
             'bagParamDict': {},
+            'bagTermOutputDict': {},
+            'bagProgDict': {},
             'allBag': [],
             'selectBag': []
 }
