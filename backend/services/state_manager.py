@@ -25,6 +25,7 @@ def submit_bag():
 @socketio.on('start_import')
 def start_import():
     handle_cmd((2, 3))
+    # handle_cmd((3, 5))
 
 @socketio.on('prev_page')
 def prev_page():

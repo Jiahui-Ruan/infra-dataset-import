@@ -1,16 +1,19 @@
-- cmd: cd $WHERE_THE_BAG_STORE
+# - cmd: cd $WHERE_THE_BAG_STORE
+#   on_fail: retry
+# - cmd: ds-rosbag-scan-multi ~/out
+#   on_fail: retry
+- cmd: ds-rosbag-import $IMPORT_PARAMS .
   on_fail: retry
-- cmd: ds-rosbag-scan-multi ~/out
+# - cmd: cd ~/out
+#   on_fail: retry
+- cmd: ds-compress-video $DATASET_NAME
   on_fail: retry
-- cmd: ds-rosbag-import
+- cmd: ds-check $DATASET_NAME
   on_fail: retry
-- cmd: cd ~/out
+- cmd: cp -r $DATASET_NAME ~/datasets_writable
   on_fail: retry
-- cmd: ds-compress-video
+- cmd: ds-submit $DATASET_NAME
   on_fail: retry
-- cmd: ds-check
-  on_fail: retry
-- cmd: cp -r * ~/datasets_writable
-  on_fail: retry
-- cmd: ds-submit
-  on_fail: retry
+
+# $DATASET_NAME
+# $IMPORT_PARAMS
