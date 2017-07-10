@@ -4,7 +4,8 @@
       <stat-header :step="step"></stat-header>
       <bag-list v-if="step === 1"></bag-list>
       <bag-param-list v-if="step === 2" :paramDict="paramDict"></bag-param-list>
-      <bag-prog-list v-if="step === 3" :termDict="termDict" :progDict="progDict">
+      <bag-prog-list v-if="step === 3"
+       :termDict="termDict" :progDict="progDict" :cmdList="cmdList">
       </bag-prog-list>
       <ctrl-bar :step="step"></ctrl-bar>
     </div>
@@ -30,6 +31,7 @@ export default {
       this.paramDict = stateDict['bagParamDict']
       this.termDict = stateDict['bagTermOutputDict']
       this.progDict = stateDict['bagProgDict']
+      this.cmdList = stateDict['cmdList']
     },
     'change_step': function (step) {
       this.step = step

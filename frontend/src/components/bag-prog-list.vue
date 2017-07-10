@@ -5,21 +5,19 @@
           <table class="ui celled table">
             <thead>
               <tr>
-                <th>Bag Name</th>
-                <th>Import</th>
-                <th>Compress Video</th>
-                <th>Check</th>
-                <th>Copy</th>
-                <th>Submit</th>
+                <th style="width:100px">Bag Name</th>
+                <template v-for="cmd in cmdList">
+                  <th style="width:100px">{{ cmd }}</th>
+                </template>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(v, k) in progDict">
-                <td style="width: 80px; white-space: nowrap;">
+                <td style="width: 100px; white-space: nowrap;">
                   <a class="ui label tag" @click="changeTerm(k)">{{ k }}</a>
                 </td>
                 <template v-for="color in v">
-                  <td style="width:80px"><tag :color="color">{{ color }}</tag></td>
+                  <td style="width:100px"><tag :color="color">{{ color }}</tag></td>
                 </template>
               </tr>
             </tbody>
@@ -45,7 +43,7 @@ export default {
       selectBagName: ''
     }
   },
-  props: ['termDict', 'progDict'],
+  props: ['termDict', 'progDict', 'cmdList'],
   components: {
     tag: require('./_tag')
   },
@@ -58,7 +56,9 @@ export default {
   watch: {
     termDict: {
       handler: function (dict) {
-        this.termOutput = dict[this.selectBagName].join('\r\n\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0')
+        if (this.selectBagName) {
+          this.termOutput = dict[this.selectBagName].join('\r\n\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0')
+        }
       },
       deep: true
     }
@@ -68,6 +68,7 @@ export default {
 
 <style lang="css" scoped>
   div.terminal {
+    margin-left: 100px;
     background-color: #000000;
     color: #02f71f;
     font-size: x-large;
