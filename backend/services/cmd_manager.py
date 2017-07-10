@@ -11,7 +11,7 @@ from config import socketio, cmd_list, state_dict
 from ThreadPool import ThreadPool
 
 STEP = 5
-output_dir = None
+OUTPUT_DIR = '~/out'
 task_sum = 0
 color_list = [
     '#e6ffe6',
@@ -60,7 +60,7 @@ def import_func(cmd, cwd, step):
     task_sum -= 1
     socketio.emit('init_state', state_dict)
     if task_sum == 0:
-        handle_cmd((step + 4,))
+        handle_cmd(step + 1)
 
 def import_worker(s, pool, cmd, cwd, step):
     logging.debug('Waiting to join the pool')
@@ -81,48 +81,36 @@ def execute_in_parallel(task_deque):
         t.setDaemon(True)
         t.start()
 
-def determine_progress(cmd):
-    if 'compress-video' in cmd:
-        return 1
-    elif 'check' in cmd:
-        return 2
-    elif 'cp' in cmd:
-        return 3
-    elif 'submit' in cmd:
-        return 4
+def cd_and_scan():
+    global OUTPUT_DIR
+    cwd_list = []
+    # working dir
+    for bag in state_dict['selectBag']:
+        cwd_list.append(bag)
+    # scan
+    for cwd in cwd_list:
+        p = Popen('ds-rosbag-scan-multi ' + OUTPUT_DIR, shell=True, stdout=PIPE, cwd=cwd)
+        stdout, err = p.communicate()
+        if cwd not in state_dict['bagParamDict']:
+            state_dict['bagParamDict'][cwd] = stdout
 
 def handle_cmd(cmd_step):
-    global task_sum, output_dir
-    for step in cmd_step:
-        cmd =  cmd_list[step]
-        # check first if a cmd is cd
-        if step == 0:
-            cwd_list = []
-            for bag in state_dict['selectBag']:
-                cwd_list.append(bag)
-        elif 'ds-rosbag-scan' in cmd:
-            for cwd in cwd_list:
-                p = Popen(cmd, shell=True, stdout=PIPE, cwd=cwd, env={ 'IMPORT_PARAMS': '???', 'DATASET_NAME': '???' })
-                stdout, err = p.communicate()
-                if cwd not in state_dict['bagParamDict']:
-                    state_dict['bagParamDict'][cwd] = stdout
-        elif 'ds-rosbag-import' in cmd:
-            for cwd, params in state_dict['bagParamDict'].iteritems():
-                for param in params.splitlines():
-                    bag_name = extract_bag_name(param)
-                    state_dict['bagProgDict'][bag_name] = [color_list[0]] * STEP
-                    state_dict['bagTermOutputDict'][bag_name] = []
-                    task_deque.append((cmd + ' ' + param, cwd, 0))
-                    task_sum += 1
-            execute_in_parallel(task_deque,)
-        elif step == 3:
-            output_dir = cmd.split()[1]
-        elif 'ds' in cmd:
-            progress = determine_progress(cmd)
-            abs_path = os.path.expanduser(output_dir)
-            for bag_name in os.listdir(abs_path):
+    global task_sum, OUTPUT_DIR
+    cmd =  cmd_list[cmd_step]
+    if 'ds-rosbag-import' in cmd:
+        for cwd, params in state_dict['bagParamDict'].iteritems():
+            for param in params.splitlines():
+                bag_name = extract_bag_name(param)
+                state_dict['bagProgDict'][bag_name] = [color_list[0]] * STEP
+                state_dict['bagTermOutputDict'][bag_name] = []
+                task_deque.append((cmd + ' ' + param, cwd, 0))
                 task_sum += 1
-                task_deque.append((cmd + ' ' + bag_name, abs_path, progress))
-            execute_in_parallel(task_deque,)
-        elif 'cp' in cmd:
-            pass
+        execute_in_parallel(task_deque,)
+    elif 'ds' in cmd:
+        abs_path = os.path.expanduser(OUTPUT_DIR)
+        for bag_name in os.listdir(abs_path):
+            task_deque.append((cmd + ' ' + bag_name, abs_path, cmd_step))
+            task_sum += 1
+        execute_in_parallel(task_deque,)
+    elif 'cp' in cmd:
+        pass

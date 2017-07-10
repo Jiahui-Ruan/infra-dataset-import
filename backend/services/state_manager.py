@@ -1,5 +1,5 @@
 from config import socketio, state_dict
-from cmd_manager import handle_cmd
+from cmd_manager import handle_cmd, cd_and_scan
 
 @socketio.on('call_init')
 def init_state():
@@ -20,12 +20,11 @@ def bag_param_change(bag_param_dict):
 
 @socketio.on('submit_bag')
 def submit_bag():
-    handle_cmd((0, 1))
+    cd_and_scan()
 
 @socketio.on('start_import')
 def start_import():
-    handle_cmd((2, 3))
-    # handle_cmd((3, 5))
+    handle_cmd(0)
 
 @socketio.on('prev_page')
 def prev_page():

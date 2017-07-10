@@ -1,11 +1,5 @@
-# - cmd: cd $WHERE_THE_BAG_STORE
-#   on_fail: retry
-# - cmd: ds-rosbag-scan-multi ~/out
-#   on_fail: retry
-- cmd: ds-rosbag-import $IMPORT_PARAMS .
+- cmd: ds-rosbag-import $IMPORT_PARAMS
   on_fail: retry
-# - cmd: cd ~/out
-#   on_fail: retry
 - cmd: ds-compress-video $DATASET_NAME
   on_fail: retry
 - cmd: ds-check $DATASET_NAME
