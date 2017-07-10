@@ -6,5 +6,5 @@
   on_fail: retry
 - cmd: cp -r $DATASET_NAME ~/datasets_writable
   on_fail: retry
-- cmd: 'ds-submit $DATASET_NAME'
+- cmd: ds-check $DATASET_NAME #ds-submit $DATASET_NAME
   on_fail: retry
